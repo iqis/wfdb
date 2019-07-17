@@ -13,6 +13,8 @@ RoxygenNote: 6.1.1
 Suggests: 
     testthat
 Imports: 
-    magrittr
+    magrittr,
+    httr,
+    dplyr
 URL: https://github.com/iqis/wfdb
 BugReports: https://github.com/iqis/wfdb/issues
