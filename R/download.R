@@ -57,28 +57,29 @@ db_annotators <- function(db_name){
 ls_db <- function(db_name){
   db_url <- paste0(.pb_index_url, db_name)
 
-  db_dir_expand <- function(path, db_url){
-    # character vector of contents from a db's subdirectory
+  #TODO: provide exception for mimicdb
+
+
+  db_dir_expand <- function(path){
     db_dir_content <- function(path) {
-      # character vector of contents from a db's directory
       xml2::read_html(path) %>%
         rvest::html_nodes("pre a") %>%
         rvest::html_text() %>%
-        `[`(6:length(.)) # keep only file paths, which starts at position 6
+        `[`(6:length(.)) # keeps only file/dir names, which starts at position 6
     }
 
+    # expand dir, and paste with content
     path %>%
       purrr::map_if(~ stringr::str_ends(., "/"),
                     ~ db_dir_content(file.path(db_url, .)) %>% paste0(.x, .)) %>%
-      purrr::flatten_chr() #avoids recursion, but take more time
+      purrr::flatten_chr() #avoids recursion, but takes a little more time
   }
 
-  # keep expanding paths until no dirs left
-  res <- db_dir_expand(path = "/", db_url = db_url)
+  # keep expanding from root until no path left
+  res <- db_dir_expand(path = "/")
   while(any(stringr::str_ends(res, "/"))){
-    res <- db_dir_expand(res, db_url = db_url)
+    res <- db_dir_expand(res)
   }
   res
 }
-
 
