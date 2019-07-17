@@ -15,6 +15,11 @@ Suggests:
 Imports: 
     magrittr,
     httr,
-    dplyr
+    dplyr,
+    purrr,
+    rvest,
+    xml2,
+    readr,
+    stringr
 URL: https://github.com/iqis/wfdb
 BugReports: https://github.com/iqis/wfdb/issues
